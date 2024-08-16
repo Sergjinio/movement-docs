@@ -1,8 +1,10 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
-const FeatureList = [
+const featureList = [
   {
     title: 'Easy to Use',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
@@ -35,11 +37,11 @@ const FeatureList = [
   },
 ];
 
-function Feature({Svg, title, description}) {
+const Feature = React.memo(({Svg, title, description}) => {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+        <Svg className={styles.featureSvg} role="img" aria-label={title} />
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
@@ -47,15 +49,21 @@ function Feature({Svg, title, description}) {
       </div>
     </div>
   );
-}
+});
+
+Feature.propTypes = {
+  Svg: PropTypes.elementType.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.node.isRequired,
+};
 
 export default function HomepageFeatures() {
   return (
     <section className={styles.features}>
       <div className="container">
         <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
+          {featureList.map(({title, Svg, description}, idx) => (
+            <Feature key={idx} title={title} Svg={Svg} description={description} />
           ))}
         </div>
       </div>
